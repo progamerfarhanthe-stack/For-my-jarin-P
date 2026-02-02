@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Queen</title>
+    <style>
+        :root {
+            --primary: #ff4081;
+            --bg: #fff5f8;
+        }
+
+        body { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            background: var(--bg); 
+            font-family: 'Georgia', serif;
+            text-align: center;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        .page { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 30px; 
+            box-shadow: 0 15px 40px rgba(255, 182, 193, 0.4); 
+            max-width: 600px; 
+            width: 85%; 
+            display: none; /* Controlled by JS */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        /* This class makes the page visible */
+        .active { display: block !important; }
+
+        .main-pic { 
+            width: 100%; 
+            max-width: 250px; 
+            aspect-ratio: 4/5; 
+            object-fit: cover; 
+            border-radius: 20px; 
+            margin-bottom: 15px; 
+            background: #eee;
+        }
+        
+        .btn-container { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 15px; 
+            margin-top: 20px; 
+            min-height: 100px;
+        }
+
+        button { 
+            padding: 15px 30px; 
+            font-size: 18px; 
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-weight: bold;
+            transition: transform 0.1s;
+        }
+
+        .yes-btn { background: var(--primary); color: white; }
+        .no-btn { background: #f0f0f0; color: #444; }
+
+        .photobooth { display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        .photo-frame { background: white; padding: 10px 10px 30px 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 140px; border: 1px solid #ddd; }
+        .image-container { width: 100%; aspect-ratio: 4 / 5; overflow: hidden; }
+        .image-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        .sweet-paragraph { font-size: 1rem; color: #333; line-height: 1.6; margin: 20px 0; text-align: left; background: #fffafb; padding: 15px; border-radius: 15px; }
+    </style>
+</head>
+<body>
+
+    <div id="page1" class="page active">
+        <img class="main-pic" src="Screenshot 2026-02-02 175902.png" onerror="this.src='https://via.placeholder.com/400x500?text=Pic+4'">
+        <h1>WILL U BE MY VALENTINE😔</h1>
+        <div class="btn-container">
+            <button class="yes-btn" onclick="nextPage('page2')">Yes</button>
+            <button class="no-btn" onclick="nextPage('page2')">No</button>
+        </div>
+    </div>
+
+    <div id="page2" class="page">
+        <img class="main-pic" src="Screenshot 2026-02-02 180442.png" onerror="this.src='https://via.placeholder.com/400x500?text=Pic+5'">
+        <h1>THINK TWICEE😠</h1>
+        <div class="btn-container">
+            <button class="yes-btn" onclick="nextPage('page3')">Yes</button>
+            <button class="no-btn" onclick="nextPage('page3')">No</button>
+        </div>
+    </div>
+
+    <div id="page3" class="page">
+        <img class="main-pic" src="Screenshot 2026-02-02 180626.png" onerror="this.src='https://via.placeholder.com/400x500?text=Pic+4'"> 
+        <h1>Please think again I love you 😔</h1>
+        <div class="btn-container">
+            <button class="yes-btn" onclick="nextPage('successPage')">Yes</button>
+            <button id="no-run" class="no-btn" onpointerdown="moveButton(this)">No</button>
+        </div>
+    </div>
+
+    <div id="successPage" class="page" style="max-height: 90vh; overflow-y: auto;">
+        <img class="main-pic" src="Screenshot 2026-02-02 180753.png" onerror="this.src='https://via.placeholder.com/400x500?text=Pic+6'">
+        <h1>I KNEW IT YES I LOVE YOU</h1>
+        
+        <div class="sweet-paragraph">
+            I love you my princess thank you for being my wife chosing me I love you my queen i will forever be with you no matter what haappens i will never leave you wdym i will leave you u literally brought the light back in my life you are my everything you are the moon of my daarkest days thanks for the giving the most sweetest memories thanks for everything in my life i am really grateful to have a wife like you and i hope i treat u well evn tho i m not but i will be the best version of myself for you i promise you to love u till my last breathe
+        </div>
+
+        <div class="photobooth">
+            <div class="photo-frame"><div class="image-container"><img src="photo1.jpg" onerror="this.src='https://via.placeholder.com/400x500?text=Photo+1'"></div></div>
+            <div class="photo-frame"><div class="image-container"><img src="photo2.jpg" onerror="this.src='https://via.placeholder.com/400x500?text=Photo+2'"></div></div>
+            <div class="photo-frame"><div class="image-container"><img src="photo3.jpg" onerror="this.src='https://via.placeholder.com/400x500?text=Photo+3'"></div></div>
+        </div>
+        <h2 style="color: var(--primary); margin-top: 20px;">Forever Yours ✨</h2>
+    </div>
+
+    <script>
+        // Use this function to switch pages
+        function nextPage(pageId) {
+            console.log("Switching to: " + pageId); // Check your console (F12) to see if this runs
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            // Show the target page
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.classList.add('active');
+            }
+        }
+
+        function moveButton(btn) {
+            // First time it's clicked, it jumps!
+            btn.style.position = "fixed";
+            
+            const maxX = window.innerWidth - btn.offsetWidth - 50;
+            const maxY = window.innerHeight - btn.offsetHeight - 50;
+            
+            const newX = Math.max(10, Math.floor(Math.random() * maxX));
+            const newY = Math.max(10, Math.floor(Math.random() * maxY));
+            
+            btn.style.left = newX + "px";
+            btn.style.top = newY + "px";
+        }
+    </script>
+</body>
+</html>
