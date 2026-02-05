@@ -19,7 +19,7 @@
             background: var(--bg); 
             font-family: 'Georgia', serif;
             text-align: center;
-            overflow-x: hidden;
+            overflow: hidden;
             touch-action: manipulation;
         }
 
@@ -30,15 +30,14 @@
             box-shadow: 0 15px 40px rgba(255, 182, 193, 0.4); 
             max-width: 600px; 
             width: 85%; 
-            display: none; /* Controlled by JS */
-            animation: fadeIn 0.5s ease-in-out;
+            display: none; 
+            position: relative;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        /* This class makes the page visible */
-        .active { display: block !important; }
+        .active-page { display: block !important; animation: fadeIn 0.5s ease; }
 
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        
         .main-pic { 
             width: 100%; 
             max-width: 250px; 
@@ -46,7 +45,7 @@
             object-fit: cover; 
             border-radius: 20px; 
             margin-bottom: 15px; 
-            background: #eee;
+            background: #f0f0f0;
         }
         
         .btn-container { 
@@ -65,15 +64,15 @@
             border-radius: 50px; 
             cursor: pointer; 
             font-weight: bold;
-            transition: transform 0.1s;
+            z-index: 10;
         }
 
         .yes-btn { background: var(--primary); color: white; }
-        .no-btn { background: #f0f0f0; color: #444; }
+        .no-btn { background: #f0f0f0; color: #444; position: relative; }
 
         .photobooth { display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-        .photo-frame { background: white; padding: 10px 10px 30px 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 140px; border: 1px solid #ddd; }
-        .image-container { width: 100%; aspect-ratio: 4 / 5; overflow: hidden; }
+        .photo-frame { background: white; padding: 10px 10px 30px 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 130px; border: 1px solid #ddd; }
+        .image-container { width: 100%; aspect-ratio: 4/5; overflow: hidden; }
         .image-container img { width: 100%; height: 100%; object-fit: cover; }
 
         .sweet-paragraph { font-size: 1rem; color: #333; line-height: 1.6; margin: 20px 0; text-align: left; background: #fffafb; padding: 15px; border-radius: 15px; }
@@ -81,77 +80,75 @@
 </head>
 <body>
 
-    <div id="page1" class="page active">
-        <img class="main-pic" src="Screenshot 2026-02-02 175902.png" onerror="this.src='https://via.placeholder.com/400x500?text=Pic+4'">
+    <audio id="bgMusic">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="page1" class="page active-page">
+        <img class="main-pic" src="Screenshot 2026-02-02 175902.png" onerror="this.src='https://via.placeholder.com/400x500?text=Pic+1'">
         <h1>WILL U BE MY VALENTINE😔</h1>
         <div class="btn-container">
-            <button class="yes-btn" onclick="nextPage('page2')">Yes</button>
-            <button class="no-btn" onclick="nextPage('page2')">No</button>
+            <button class="yes-btn" onclick="goTo('successPage')">Yes</button>
+            <button class="no-btn" onclick="goTo('page2')">No</button>
         </div>
     </div>
 
     <div id="page2" class="page">
-        <img class="main-pic" src="Screenshot 2026-02-02 180442.png" onerror="this.src='https://via.placeholder.com/400x500?text=Pic+5'">
+        <img class="main-pic" src="Screenshot 2026-02-02 180442.png" onerror="this.src='https://via.placeholder.com/400x500?text=Pic+2'">
         <h1>THINK TWICEE😠</h1>
         <div class="btn-container">
-            <button class="yes-btn" onclick="nextPage('page3')">Yes</button>
-            <button class="no-btn" onclick="nextPage('page3')">No</button>
+            <button class="yes-btn" onclick="goTo('successPage')">Yes</button>
+            <button class="no-btn" onclick="goTo('page3')">No</button>
         </div>
     </div>
 
     <div id="page3" class="page">
-        <img class="main-pic" src="Screenshot 2026-02-02 180626.png" onerror="this.src='https://via.placeholder.com/400x500?text=Pic+4'"> 
+        <img class="main-pic" src="Screenshot 2026-02-02 180626.png" onerror="this.src='https://via.placeholder.com/400x500?text=Pic+3'"> 
         <h1>Please think again I love you 😔</h1>
         <div class="btn-container">
-            <button class="yes-btn" onclick="nextPage('successPage')">Yes</button>
-            <button id="no-run" class="no-btn" onpointerdown="moveButton(this)">No</button>
+            <button class="yes-btn" onclick="goTo('successPage')">Yes</button>
+            <button id="no-run" class="no-btn" onpointerdown="runAway(this)" onclick="runAway(this)">No</button>
         </div>
     </div>
 
     <div id="successPage" class="page" style="max-height: 90vh; overflow-y: auto;">
-        <img class="main-pic" src="Screenshot 2026-02-02 180753.png" onerror="this.src='https://via.placeholder.com/400x500?text=Pic+6'">
+        <img class="main-pic" src="Screenshot 2026-02-02 180753.png" onerror="this.src='https://via.placeholder.com/400x500?text=Success'">
         <h1>I KNEW IT YES I LOVE YOU</h1>
-        
         <div class="sweet-paragraph">
-            I love you my princess thank you for being my wife chosing me I love you my queen i will forever be with you no matter what haappens i will never leave you wdym i will leave you u literally brought the light back in my life you are my everything you are the moon of my daarkest days thanks for the giving the most sweetest memories thanks for everything in my life i am really grateful to have a wife like you and i hope i treat u well evn tho i m not but i will be the best version of myself for you i promise you to love u till my last breathe
+            JAAN MY BABY THANKS FOR BEING MY VALENTINE CHOSING ME AS UR HUSBAND I LOVE YOU MY QUEEN Happy Valentine's Day to the girl who holds my heart in ways i never knew it was possible. You are my comfort my home my princess my wife my best fiend my crime partner my happiness and my sadness whenever u r sad i am saad and when u r happy it makes me happy ur smile ur laugh is the cutest and the most sweetest thing possible yes tbh i am writing this ratrer 2 ta baje but yes tbh i never thought someone would love me in this way i would get a wife like you in thins generation i used to think every girls are the same they date for fun but nah fr nah jaan u proved it wrong u came up in my life showed me what love is and how it feels like you are my safest place and my favorite person all at once. your smile your laugh fixes my worst days be your voice that calms my heart i love your voice whenever you send me vms or just spam vms or msgs whenever i overthink je i am ur junior i listen to ur vms i  am sorry for being a junior but trust me i feel appreciated i feel worth i feel like yes i am treating my princess right Your presence that makes everything feel right whenever u r with me i feel like i have someone to talk i can share anything i want some one is helping me you are my biggest supporter in my life YES YOU ARE Even when words dont come out perfectly or maybe i cant communicate properly tmi bujhe jao what i am trying to mean and u stop doing that u apologies nd all u always understand me when communication feels hard even when life gets hard i cant express how i feel even if life gets busy studies and all parentss issue or whatever it is JUST KNOW I AM NOT LEAVING YOU U WILL TAKE SS OF THIS RIGHT REKHE DAO SS TA I WILL NEVER EVER LEAVE U MY WIFEY MY PRINCESS WALLAHI I PROMISE I WILL NEVER IK we will never leave each other Love is not about being perfect its about choosing each other again and again even on the difficult days ANDD UR HUSBAND WILL ALWAYS CHOOSE U HONEY ALWAYS.I seriously want to grow with you laugh with you heal with you and face every up and down together support u every time u feel bad i will be ur biggest supporter even if theres no one with u i will be i will always stay by your side and tbh sometimes BBUT IN THIS SPECIAL DAY KNOW THAT You are my Valentine for every day that comes after NOT JUST VALENTINE MY WIFE MY PRINCESS MY QUEEN MY HONEYBONEY GULUMULU BABYYYY THE MOTHER OF OUR CHOTOOOO BABY MY JAANU JAAN PAKHI MY WORLD MY BESTFRND MY EVERYTHING Thank you for being yourself for loving me the way you do and for existing in my life for choosing me thanks for loving me in this way for bringing my sparks back for bringing the extroverted me again thanks for bringing back my smile i really love you alot and i promise wallahi its you only you you its u or no one I cant ever explain my love for you honey and also no overthinking okay? i am all yours ik what makes u feel bad dw jaan i am all yours always forever my eyes are only for you only you my queen and we will get married INSHAALLAH YES Y BABYYYYY SO PLEASE NEVERO OVERTHINK OKAYY? I AM URS UR HUSBAND IS ALL YOURS MY QUEEENNNN I LOVE YOU MWWWWWWWWWAH
         </div>
-
         <div class="photobooth">
-            <div class="photo-frame"><div class="image-container"><img src="photo1.jpg" onerror="this.src='https://via.placeholder.com/400x500?text=Photo+1'"></div></div>
-            <div class="photo-frame"><div class="image-container"><img src="photo2.jpg" onerror="this.src='https://via.placeholder.com/400x500?text=Photo+2'"></div></div>
-            <div class="photo-frame"><div class="image-container"><img src="photo3.jpg" onerror="this.src='https://via.placeholder.com/400x500?text=Photo+3'"></div></div>
+            <div class="photo-frame"><div class="image-container"><img src="photo1.jpg"></div></div>
+            <div class="photo-frame"><div class="image-container"><img src="photo2.jpg"></div></div>
+            <div class="photo-frame"><div class="image-container"><img src="photo3.jpg"></div></div>
         </div>
         <h2 style="color: var(--primary); margin-top: 20px;">Forever Yours ✨</h2>
     </div>
 
     <script>
-        // Use this function to switch pages
-        function nextPage(pageId) {
-            console.log("Switching to: " + pageId); // Check your console (F12) to see if this runs
-            // Hide all pages
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => {
-                page.classList.remove('active');
-            });
-            // Show the target page
-            const target = document.getElementById(pageId);
+        function goTo(id) {
+            const allPages = document.querySelectorAll('.page');
+            allPages.forEach(p => p.classList.remove('active-page'));
+            
+            const target = document.getElementById(id);
             if (target) {
-                target.classList.add('active');
+                target.classList.add('active-page');
+            }
+
+            // Logic to play music starting at 0:45 ONLY on successPage
+            if (id === 'successPage') {
+                const music = document.getElementById('bgMusic');
+                music.currentTime = 45; 
+                music.play().catch(e => console.log("Playback failed:", e));
             }
         }
 
-        function moveButton(btn) {
-            // First time it's clicked, it jumps!
+        function runAway(btn) {
             btn.style.position = "fixed";
-            
-            const maxX = window.innerWidth - btn.offsetWidth - 50;
-            const maxY = window.innerHeight - btn.offsetHeight - 50;
-            
-            const newX = Math.max(10, Math.floor(Math.random() * maxX));
-            const newY = Math.max(10, Math.floor(Math.random() * maxY));
-            
-            btn.style.left = newX + "px";
-            btn.style.top = newY + "px";
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 20);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight - 20);
+            btn.style.left = x + "px";
+            btn.style.top = y + "px";
         }
     </script>
 </body>
